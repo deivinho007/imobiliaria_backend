@@ -1,6 +1,6 @@
 # 🏡 Villa Indaiá Backend
 
-## Backend desenvolvido em Node.js para o gerenciamento de um site imobiliária.
+## Backend desenvolvido em Node.js para o gerenciamento para um site de imobiliária.
 Inclui autenticação com JWT, criptografia de senhas com Bcrypt, envio de emails com Nodemailer e integração com banco de dados via Prisma ORM.
 
 ### 📌 Tecnologias Utilizadas
