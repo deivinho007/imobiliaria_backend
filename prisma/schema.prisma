@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  email     String   @unique
+  senha     String
+  tipo      String   // "admin" ou "cliente"
+  telefone  String?  // opcional
+  ativo     Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relacionamentos
+  agendamentos Agendamento[]
+  favoritos    Favorito[]
+
+  @@map("users")
+}
+
+model Imovel {
+  id                Int      @id @default(autoincrement())
+  foto              String   // ou String[] para múltiplas fotos
+  titulo            String
+  localizacao       String
+  valor             Float
+  iptu              Float
+  metros_quadrados  Float
+  quartos           Int
+  banheiros         Int
+  garagens          Int
+  ambiente          String
+  conveniencias     String   // ou String[] para lista
+  descricao         String
+
+  // Relacionamentos
+  agendamentos      Agendamento[]
+  favoritos         Favorito[]
+
+  @@map("imoveis")
+}
+
+model Agendamento {
+  id           Int      @id @default(autoincrement())
+  usuarioId    Int
+  imovelId     Int
+  nome         String
+  email        String
+  telefone     String
+  dataVisita   DateTime
+  horario      String
+  observacoes  String?
+  status       String   @default("ativo") // "ativo", "confirmado", "recusado", "cancelado", "editado"
+  createdAt    DateTime @default(now())
+
+  // Relacionamentos
+  usuario      User     @relation(fields: [usuarioId], references: [id])
+  imovel       Imovel   @relation(fields: [imovelId], references: [id])
+
+  @@map("agendamentos")
+}
+
+model Favorito {
+  id        Int      @id @default(autoincrement())
+  usuarioId Int
+  imovelId  Int
+  createdAt DateTime @default(now())
+
+  // Relacionamentos
+  usuario   User     @relation(fields: [usuarioId], references: [id])
+  imovel    Imovel   @relation(fields: [imovelId], references: [id])
+
+  // Evitar favoritos duplicados
+  @@unique([usuarioId, imovelId])
+  @@map("favoritos")
+}
