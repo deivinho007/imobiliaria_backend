@@ -4,22 +4,20 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite" // pode trocar pra mysql/postgres depois
+  provider = "mysql" // pode trocar pra mysql/postgres depois
   url      = env("DATABASE_URL")
 }
 
 // ================= ENUMS ==================
 enum TipoUsuario {
-  ADMIN
-  CLIENTE
+  adm
+  cliente
 }
 
 enum StatusAgendamento {
-  ATIVO
-  CONFIRMADO
-  RECUSADO
-  CANCELADO
-  EDITADO
+  pendente 
+  confirmado
+  recusado
 }
 
 // ================= MODELOS ==================
@@ -28,8 +26,7 @@ model User {
   nome         String
   email        String        @unique
   senha        String
-  tipo         TipoUsuario   @default(CLIENTE)
-  telefone     String?       // opcional
+  tipo         TipoUsuario   @default(cliente)
   ativo        Boolean       @default(true)
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
@@ -67,13 +64,10 @@ model Agendamento {
   id           Int               @id @default(autoincrement())
   usuarioId    Int
   imovelId     Int
-  nome         String
-  email        String
-  telefone     String
   dataVisita   DateTime
   horario      String
   observacoes  String?
-  status       StatusAgendamento @default(ATIVO)
+  status       StatusAgendamento @default(pendente)
   createdAt    DateTime          @default(now())
 
   // Relacionamentos
