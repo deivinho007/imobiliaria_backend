@@ -2,31 +2,32 @@ import { PrismaClient } from '../generated/prisma/index.js'
 
 const prisma = new PrismaClient()
 
-export const create = async (imovel) =>{
-    return await prisma.imovel.create({
-        data: imovel
+export const create = async (favoritos) =>{
+    return await prisma.favorito.create({
+        data: favoritos
     })
 }
 
-export const atualizar = async (id, imovel) =>{
-    return await prisma.imovel.update({
+
+export const atualizar = async (id, favoritos) =>{
+    return await prisma.favorito.update({
         where: { id },
-        data: imovel
+        data: favoritos
     })
 }
 
 export const list = async () =>{
-    return await prisma.imovel.findMany()
+    return await prisma.favorito.findMany()
 }
 
 export const getById  =  async (id) =>{
-    return await prisma.imovel.findUnique({
+    return await prisma.favorito.findUnique({
         where: {id: Number(id)}
     })                                                                     
 }
 
 export const remove =  async (id) =>{
-    return await prisma.imovel.delete({
+    return await prisma.favorito.delete({
         where: {id: Number(id)}
     })                                                                     
 }

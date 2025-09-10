@@ -1,4 +1,4 @@
-import { atualizar } from "../../model/imovelModel";
+import { atualizar } from "../../model/imovelModel.js";
 
 export const putByIdImovelController = async (req, res) => {
     const id = req.params.id;

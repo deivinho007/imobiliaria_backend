@@ -1,4 +1,4 @@
-import { getById } from "../../model/imovelModel";
+import { getById } from "../../model/imovelModel.js";
 
 export const getByIdImovelController = async (req, res) => {
     const id = req.params.id;

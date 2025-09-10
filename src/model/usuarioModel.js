@@ -1,12 +1,14 @@
-import { PrismaClient } from "../generated/prisma/index.js"
+import { PrismaClient } from '../generated/prisma/index.js'
+import bcrypt from 'bcrypt'
 
 const prisma = new PrismaClient()
 
-export const create = async (usuario) =>{
+export const create = async (usuario) => {
+    const senhaHash = await bcrypt.hash(usuario.senha, 10); // gera hash da senha
     return await prisma.user.create({
-        data: usuario
-    })
-}
+      data: { ...usuario, senha: senhaHash }
+    });
+  };
 
 export const update = async (id, usuario) =>{
     return await prisma.user.update({
@@ -30,3 +32,8 @@ export const remove =  async (id) =>{
         where: {id: Number(id)}
     })                                                                     
 }
+
+export const getByEmail = async (email) => {
+    return await prisma.user.findUnique({ where: { email } });
+  };
+  

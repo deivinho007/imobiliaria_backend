@@ -1,79 +1,57 @@
-// Gerador e conexão
 generator client {
   provider = "prisma-client-js"
+  output   = "./src/generated/prisma"
 }
 
 datasource db {
-  provider = "mysql" // pode trocar pra mysql/postgres depois
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-// ================= ENUMS ==================
-enum TipoUsuario {
-  adm
-  cliente
-}
-
-enum StatusAgendamento {
-  pendente 
-  confirmado
-  recusado
-}
-
-// ================= MODELOS ==================
 model User {
-  id           Int           @id @default(autoincrement())
-  nome         String
-  email        String        @unique
-  senha        String
-  tipo         TipoUsuario   @default(cliente)
-  ativo        Boolean       @default(true)
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-
-  // Relacionamentos
-  agendamentos Agendamento[]
-  favoritos    Favorito[]
+  id        Int         @id @default(autoincrement())
+  nome      String
+  email     String      @unique
+  senha     String
+  tipo      TipoUsuario @default(cliente)
+  ativo     Boolean     @default(true)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 
   @@map("users")
 }
 
 model Imovel {
-  id             Int           @id @default(autoincrement())
-  foto           String        // pode virar tabela separada futuramente
-  titulo         String
-  localizacao    String
-  valor          Float
-  iptu           Float
+  id              Int    @id @default(autoincrement())
+  foto            String
+  titulo          String
+  localizacao     String
+  valor           Float
+  iptu            Float
   metrosQuadrados Float
-  quartos        Int
-  banheiros      Int
-  garagens       Int
-  ambiente       String
-  conveniencias  String        // pode virar tabela separada futuramente
-  descricao      String
-
-  // Relacionamentos
-  agendamentos   Agendamento[]
-  favoritos      Favorito[]
+  quartos         Int
+  banheiros       Int
+  garagens        Int
+  ambiente        String
+  conveniencias   String
+  descricao       String
 
   @@map("imoveis")
 }
 
 model Agendamento {
-  id           Int               @id @default(autoincrement())
-  usuarioId    Int
-  imovelId     Int
-  dataVisita   DateTime
-  horario      String
-  observacoes  String?
-  status       StatusAgendamento @default(pendente)
-  createdAt    DateTime          @default(now())
+  id          Int               @id @default(autoincrement())
+  usuarioId   Int
+  imovelId    Int
+  dataVisita  DateTime           @db.Date
+  horario     String
+  telefone    String?           @db.VarChar(20)
+  observacoes String?
+  status      StatusAgendamento @default(pendente)
+  createdAt   DateTime          @default(now())
 
-  // Relacionamentos
-  usuario      User    @relation(fields: [usuarioId], references: [id])
-  imovel       Imovel  @relation(fields: [imovelId], references: [id])
-
+  @@index([imovelId], map: "agendamentos_imovelId_fkey")
+  @@index([usuarioId], map: "agendamentos_usuarioId_fkey")
   @@map("agendamentos")
 }
 
@@ -83,11 +61,18 @@ model Favorito {
   imovelId  Int
   createdAt DateTime @default(now())
 
-  // Relacionamentos
-  usuario   User     @relation(fields: [usuarioId], references: [id])
-  imovel    Imovel   @relation(fields: [imovelId], references: [id])
-
-  // Evitar favoritos duplicados
   @@unique([usuarioId, imovelId])
+  @@index([imovelId], map: "favoritos_imovelId_fkey")
   @@map("favoritos")
+}
+
+enum TipoUsuario {
+  adm
+  cliente
+}
+
+enum StatusAgendamento {
+  pendente
+  confirmado
+  recusado
 }

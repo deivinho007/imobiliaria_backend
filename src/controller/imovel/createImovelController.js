@@ -1,4 +1,4 @@
-import { create } from '../imovel/imovelModel.js'
+import { create } from '../../model/imovelModel.js' // ← Correto
 
 export const createImovelController = async (req, res) => {
     const imovel = req.body;
