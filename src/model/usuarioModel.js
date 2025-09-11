@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt'
 const prisma = new PrismaClient()
 
 export const create = async (usuario) => {
-    const senhaHash = await bcrypt.hash(usuario.senha, 10); // gera hash da senha
+    const senhaHash = await bcrypt.hash(usuario.senha, 10); 
     return await prisma.user.create({
       data: { ...usuario, senha: senhaHash }
     });

@@ -5,15 +5,20 @@ import jwt from 'jsonwebtoken';
 const SECRET = process.env.JWT_SECRET || 'supersecretkey';
 
 export const loginUsuarioController = async (req, res) => {
-  const { email, senha } = req.body;
 
-  const usuario = await getByEmail(email);
-  if (!usuario) return res.status(404).json({ message: 'Usuário não encontrado' });
+  try {
+    const { email, senha } = req.body;
 
-  const senhaValida = await bcrypt.compare(senha, usuario.senha);
-  if (!senhaValida) return res.status(401).json({ message: 'Senha incorreta' });
+    const usuario = await getByEmail(email);
+    if (!usuario) return res.status(404).json({ message: 'Usuário não encontrado' });
 
-  const token = jwt.sign({ id: usuario.id, email: usuario.email }, SECRET, { expiresIn: '1h' });
+    const senhaValida = await bcrypt.compare(senha, usuario.senha);
+    if (!senhaValida) return res.status(401).json({ message: 'Senha incorreta' });
 
-  res.json({ token });
-};
+    const token = jwt.sign({ id: usuario.id, email: usuario.email }, SECRET, { expiresIn: '1h' });
+
+    res.json({ token });
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao fazer login', error: error.message });
+  }
+}

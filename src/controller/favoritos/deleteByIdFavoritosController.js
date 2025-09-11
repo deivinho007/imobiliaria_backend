@@ -1,13 +1,19 @@
-import {remove} from '../../model/favoritosModel.js'
+import { remove } from '../../model/favoritosModel.js'
 
-// Deletar
 export const deleteByIdFavoritosController = async (req, res) => {
-    const id = req.params.id;
-    const result = await remove(+id)
+    try {
+        const id = req.params.id;
+        const result = await remove(+id)
 
-    res.status(201).json({
-         message: 'Favorito removido com sucesso',
-         favoritos: result
+        res.status(201).json({
+            message: 'Favorito removido com sucesso',
+            favoritos: result
 
-     });
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Erro ao remover favorito',
+            error: error.message
+        });
+    }
 };

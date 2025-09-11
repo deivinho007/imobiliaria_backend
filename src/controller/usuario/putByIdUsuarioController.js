@@ -1,14 +1,23 @@
 
 import { update } from '../../model/usuarioModel.js'
 
-export const putByIdUsuarioController = async (req, res) =>{
-  const usuario = req.body;
-  const id = req.params.id;
+export const putByIdUsuarioController = async (req, res) => {
 
-  const result = await update(+id, usuario);
+  try {
+    const usuario = req.body;
+    const id = req.params.id;
 
-  res.json({
-    message: 'Usuario editado com sucesso',
-    usuario: result
-  });
+    const result = await update(+id, usuario);
+
+    res.json({
+      message: 'Usuario editado com sucesso',
+      usuario: result
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Erro ao editar usuário',
+      error: error.message
+    });
+
+  }
 }
