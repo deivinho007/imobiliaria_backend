@@ -17,6 +17,13 @@ export const loginUsuarioController = async (req, res) => {
 
     const token = jwt.sign({ id: usuario.id, email: usuario.email }, SECRET, { expiresIn: '1h' });
 
+    res.json({
+      message: 'Login realizado com sucesso',
+      id: usuario.id,
+      email: usuario.email,
+      token
+    })
+
     res.json({ token });
   } catch (error) {
     res.status(500).json({ message: 'Erro ao fazer login', error: error.message });

@@ -6,14 +6,16 @@ const prisma = new PrismaClient()
 export const create = async (usuario) => {
     const senhaHash = await bcrypt.hash(usuario.senha, 10); 
     return await prisma.user.create({
-      data: { ...usuario, senha: senhaHash }
+      data: { ...usuario, senha: senhaHash },
+      select: { id: true, email: true, nome: true }
     });
   };
 
 export const update = async (id, usuario) =>{
     return await prisma.user.update({
         where: { id },
-        data: usuario
+        data: usuario,
+        select: { id: true, email: true, nome: true }
     })
 }
 
@@ -23,13 +25,15 @@ export const list = async () =>{
 
 export const getById  =  async (id) =>{
     return await prisma.user.findUnique({
-        where: {id: Number(id)}
+        where: {id: Number(id)},
+        select: { id: true, email: true, nome: true }
     })                                                                     
 }
 
 export const remove =  async (id) =>{
     return await prisma.user.delete({
-        where: {id: Number(id)}
+        where: {id: Number(id)},
+        select: { id: true, email: true, nome: true }
     })                                                                     
 }
 
