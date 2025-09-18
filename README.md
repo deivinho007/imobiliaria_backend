@@ -25,3 +25,17 @@ Nodemailer
 
 Dotenv
  – Variáveis de ambiente
+
+ ### 💡 Resumo do fluxo seguro:
+
+## Criar branch → git checkout -b minha-branch
+
+- Trabalhar e commitar → git add . && git commit -m "msg"
+
+- Push → git push -u origin minha-branch
+
+- Voltar para main → git checkout main
+
+- Merge → git merge minha-branch
+
+- Push main → git push origin main
