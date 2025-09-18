@@ -20,7 +20,9 @@ export const update = async (id, usuario) =>{
 }
 
 export const list = async () =>{
-    return await prisma.user.findMany()
+    return await prisma.user.findMany({
+        select: { id: true, email: true, nome: true }
+    })
 }
 
 export const getById  =  async (id) =>{
