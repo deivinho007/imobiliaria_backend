@@ -7,11 +7,17 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 
 const app = express();
-const port = 3001;
+const port = 3100;
 dotenv.config()
 
 app.use(cors());
 app.use(express.json());
+// Adicione isso depois do app.use(express.json()):
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+    console.log('Body:', req.body);
+    next();
+});
 
 app.use('/usuario', usuarioRouter)
 app.use('/imovel', imovelRouter)
