@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/usuario', usuarioRouter)
-app.use('/imovel', imovelRouter)
+app.use('/imoveis', imovelRouter)
 app.use('/favoritos', favoritosRouter)
 app.use('/agenda', agendaRouter)
 
