@@ -15,12 +15,13 @@ export const loginUsuarioController = async (req, res) => {
     const senhaValida = await bcrypt.compare(senha, usuario.senha);
     if (!senhaValida) return res.status(401).json({ message: 'Senha incorreta' });
 
-    const token = jwt.sign({ id: usuario.id, email: usuario.email }, SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: usuario.id, email: usuario.email, tipo: usuario.tipo }, SECRET, { expiresIn: '1h' });
 
     res.json({
       message: 'Login realizado com sucesso',
       id: usuario.id,
       email: usuario.email,
+      tipo: usuario.tipo,
       token
     })
 
