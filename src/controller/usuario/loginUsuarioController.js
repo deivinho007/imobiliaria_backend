@@ -25,7 +25,7 @@ export const loginUsuarioController = async (req, res) => {
       token
     })
 
-    res.json({ token });
+
   } catch (error) {
     res.status(500).json({ message: 'Erro ao fazer login', error: error.message });
   }
