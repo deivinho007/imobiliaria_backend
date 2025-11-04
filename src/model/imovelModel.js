@@ -19,6 +19,18 @@ export const list = async () =>{
     return await prisma.imovel.findMany()
 }
 
+export const listDestaque= async () =>{
+    return await prisma.imovel.findMany({
+        where: { destaque: true }
+    })
+}
+
+export const listLancamento = async () =>{
+    return await prisma.imovel.findMany({
+        where: { lancamento: true }
+    })
+}
+
 export const getById  =  async (id) =>{
     return await prisma.imovel.findUnique({
         where: {id: Number(id)}

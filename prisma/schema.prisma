@@ -39,7 +39,7 @@ model Imovel {
   ambiente        String  @db.VarChar(100)
   conveniencias   String  @db.Text
   descricao       String  @db.Text
-  detaque         Boolean @default(false)
+  destaque         Boolean @default(false)
   lancamento      Boolean @default(false)
   ativo           Boolean @default(true)
   createdAt       DateTime @default(now())
