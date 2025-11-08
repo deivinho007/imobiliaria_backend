@@ -6,15 +6,38 @@ const prisma = new PrismaClient();
 export const create = async (agenda) => {
   const { usuarioId, imovelId, dataVisita, horario, telefone, observacoes, status } = agenda;
 
+  // 🔍 Logs para debug
+  console.log('🔍 Validando dados antes de criar:');
+  console.log('   usuarioId:', usuarioId, '→', parseInt(usuarioId));
+  console.log('   imovelId:', imovelId, '→', parseInt(imovelId));
+  
+  // ✅ Verifica se usuário existe
+  const usuarioExiste = await prisma.user.findUnique({
+    where: { id: parseInt(usuarioId) }
+  });
+  
+  if (!usuarioExiste) {
+    throw new Error(`Usuário com ID ${usuarioId} não encontrado`);
+  }
+  
+  // ✅ Verifica se imóvel existe
+  const imovelExiste = await prisma.imovel.findUnique({
+    where: { id: parseInt(imovelId) }
+  });
+  
+  if (!imovelExiste) {
+    throw new Error(`Imóvel com ID ${imovelId} não encontrado`);
+  }
+
   return await prisma.agendamento.create({
     data: {
-      dataVisita,
+      usuarioId: parseInt(usuarioId),
+      imovelId: parseInt(imovelId),
+      dataVisita: new Date(dataVisita),
       horario,
-      telefone,
-      observacoes,
-      status,
-      usuario: { connect: { id: usuarioId } },
-      imovel: { connect: { id: imovelId } }
+      telefone: telefone || null,
+      observacoes: observacoes || null,
+      status: status || 'pendente'
     },
     include: {
       usuario: true,
@@ -30,13 +53,13 @@ export const atualizar = async (id, agenda) => {
   return await prisma.agendamento.update({
     where: { id: Number(id) },
     data: {
-      dataVisita,
-      horario,
-      telefone,
-      observacoes,
-      status,
-      ...(usuarioId && { usuario: { connect: { id: usuarioId } } }),
-      ...(imovelId && { imovel: { connect: { id: imovelId } } })
+      ...(usuarioId && { usuarioId: parseInt(usuarioId) }),
+      ...(imovelId && { imovelId: parseInt(imovelId) }),
+      ...(dataVisita && { dataVisita: new Date(dataVisita) }),
+      ...(horario && { horario }),
+      ...(telefone !== undefined && { telefone: telefone || null }),
+      ...(observacoes !== undefined && { observacoes: observacoes || null }),
+      ...(status && { status })
     },
     include: {
       usuario: true,
@@ -51,6 +74,9 @@ export const list = async () => {
     include: {
       usuario: true,
       imovel: true
+    },
+    orderBy: {
+      dataVisita: 'desc'
     }
   });
 };
@@ -70,5 +96,37 @@ export const getById = async (id) => {
 export const remove = async (id) => {
   return await prisma.agendamento.delete({
     where: { id: Number(id) }
+  });
+};
+
+// 🟣 Buscar agendamentos por usuário
+export const findByUsuario = async (usuarioId) => {
+  return await prisma.agendamento.findMany({
+    where: { usuarioId: parseInt(usuarioId) },
+    include: {
+      usuario: {
+        select: {
+          id: true,
+          nome: true,
+          email: true
+        }
+      },
+      imovel: {
+        select: {
+          id: true,
+          titulo: true,
+          localizacao: true,
+          valor: true,
+          foto: true,
+          quartos: true,
+          banheiros: true,
+          garagens: true,
+          metrosQuadrados: true
+        }
+      }
+    },
+    orderBy: {
+      dataVisita: 'desc'
+    }
   });
 };
