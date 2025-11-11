@@ -1,4 +1,4 @@
-import { remove } from '../../model/usuarioModel.js'
+import { remove } from '../../model/imovelModel.js'
 
 export const deleteByIdImovelController = async (req, res) => {
 
