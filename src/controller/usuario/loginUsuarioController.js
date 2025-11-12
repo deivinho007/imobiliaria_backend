@@ -22,6 +22,7 @@ export const loginUsuarioController = async (req, res) => {
       id: usuario.id,
       email: usuario.email,
       tipo: usuario.tipo,
+      nome: usuario.nome,
       token
     })
 
