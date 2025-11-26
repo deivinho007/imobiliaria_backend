@@ -99,7 +99,7 @@ export const remove = async (id) => {
   });
 };
 
-// 🟣 Buscar agendamentos por usuário
+// 🟣 Buscar agendamentos por usuário (CORRIGIDO - foto → fotoPrincipal)
 export const findByUsuario = async (usuarioId) => {
   return await prisma.agendamento.findMany({
     where: { usuarioId: parseInt(usuarioId) },
@@ -117,11 +117,17 @@ export const findByUsuario = async (usuarioId) => {
           titulo: true,
           localizacao: true,
           valor: true,
-          foto: true,
+          fotoPrincipal: true,      // ✅ CORRIGIDO
+          fotoSecundaria: true,     // ✅ ADICIONADO
+          fotoTerciaria: true,      // ✅ ADICIONADO
           quartos: true,
           banheiros: true,
           garagens: true,
-          metrosQuadrados: true
+          metrosQuadrados: true,
+          iptu: true,               // ✅ ADICIONADO
+          ambiente: true,           // ✅ ADICIONADO
+          conveniencias: true,      // ✅ ADICIONADO
+          descricao: true           // ✅ ADICIONADO
         }
       }
     },
