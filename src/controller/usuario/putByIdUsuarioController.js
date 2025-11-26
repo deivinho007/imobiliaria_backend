@@ -1,4 +1,3 @@
-
 import { update } from '../../model/usuarioModel.js'
 
 export const putByIdUsuarioController = async (req, res) => {
@@ -7,10 +6,15 @@ export const putByIdUsuarioController = async (req, res) => {
     const usuario = req.body;
     const id = req.params.id;
 
+    // Se a senha estiver vazia ou apenas espaços, remove do objeto
+    if (!usuario.senha || usuario.senha.trim() === "") {
+      delete usuario.senha;
+    }
+
     const result = await update(+id, usuario);
 
     res.json({
-      message: 'Usuario editado com sucesso',
+      message: 'Usuário editado com sucesso',
       usuario: result
     });
   } catch (error) {
