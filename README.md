@@ -1,41 +1,59 @@
 # 🏡 Villa Indaiá Backend
 
-## Backend desenvolvido em Node.js para o gerenciamento para um site de imobiliária.
-Inclui autenticação com JWT, criptografia de senhas com Bcrypt, envio de emails com Nodemailer e integração com banco de dados via Prisma ORM.
+API Backend construída em Node.js para gerenciamento de sistema imobiliário.
 
-### 📌 Tecnologias Utilizadas
+## 📋 Sobre a API
 
-Node.js
- – Ambiente de execução
+API RESTful completa que fornece endpoints para:
 
-Express
- – Framework web
+- **Autenticação de usuários** com JWT e criptografia de senhas
+- **Gerenciamento de imóveis** (CRUD completo com filtros e busca)
+- **Sistema de contato** com envio de emails automatizado
+- **Controle de acesso** com middlewares de autenticação
+- **Integração com banco de dados** via Prisma ORM
 
-Prisma
- – ORM para banco de dados
+## 🚀 Stack Tecnológico
 
-JWT (jsonwebtoken)
- – Autenticação baseada em tokens
+- **Node.js** + **Express** - Servidor e roteamento
+- **Prisma ORM** - Gerenciamento de banco de dados
+- **JWT** - Autenticação stateless
+- **Bcrypt** - Hash de senhas
+- **Nodemailer** - Envio de emails
 
-Bcrypt
- – Criptografia de senhas
+## 🛣️ Principais Rotas da API
 
-Nodemailer
- – Envio de emails
+### Autenticação
+- `POST /api/auth/register` - Criar novo usuário
+- `POST /api/auth/login` - Autenticar usuário
+- `POST /api/auth/forgot-password` - Recuperar senha
 
-Dotenv
- – Variáveis de ambiente
+### Imóveis
+- `GET /api/imoveis` - Listar imóveis (com filtros por tipo, preço, cidade, etc)
+- `GET /api/imoveis/:id` - Buscar imóvel específico
+- `POST /api/imoveis` - Cadastrar imóvel (requer autenticação)
+- `PUT /api/imoveis/:id` - Atualizar imóvel (requer autenticação)
+- `DELETE /api/imoveis/:id` - Remover imóvel (requer autenticação)
 
- ### 💡 Resumo do fluxo seguro:
+### Contato
+- `POST /api/contato` - Enviar mensagem de contato
 
-## Criar branch → git checkout -b minha-branch
+## 🔐 Recursos de Segurança
 
-- Trabalhar e commitar → git add . && git commit -m "msg"
+- Tokens JWT para autenticação stateless
+- Senhas criptografadas com Bcrypt
+- Middlewares de validação e autorização
+- Proteção de rotas administrativas
 
-- Push → git push -u origin minha-branch
+## 📦 Instalação Rápida
 
-- Voltar para main → git checkout main
+```bash
+git clone https://github.com/deivinho007/imobiliaria_backend.git
+cd imobiliaria_backend
+npm install
+npx prisma migrate dev
+npm run dev
+```
 
-- Merge → git merge minha-branch
+## 👨‍💻 Autor
 
-- Push main → git push origin main
+Desenvolvido por **Deivinho007**
